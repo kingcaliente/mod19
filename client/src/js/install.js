@@ -32,3 +32,20 @@ window.addEventListener('appinstalled', (event) => {
     console.log('install hit')
     window.deferredPrompt = null;
 }); 
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+  butInstall.style.display = 'block';
+});
+
+butInstall.addEventListener('click', async () => {
+  butInstall.style.display = 'none';
+  deferredPrompt.prompt();
+  const choiceResult = await deferredPrompt.userChoice;
+});
+
+window.addEventListener('appinstalled', (event) => {
+  console.log('App installed', event);
+});
